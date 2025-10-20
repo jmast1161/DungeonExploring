@@ -15,14 +15,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioSource walkingAudioSource;
 
-    private Vector2 screenBounds;
     private Vector2 moveDirection;
-    private float objectWidth;
-    private float objectHeight;
     public float hf = 0.0f;
     public float vf = 0.0f;
-
-    private Vector2 velocity = new Vector2(0, 0);
 
     public event Action<Player> SpikeHit;
     public event Action<Player> DoorHit;
@@ -30,9 +25,6 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        screenBounds = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-        objectWidth = transform.GetComponent<SpriteRenderer>().bounds.size.x / 2 - 1.5f;
-        objectHeight = transform.GetComponent<SpriteRenderer>().bounds.size.y / 2 - 1.5f;
         rigidBody.freezeRotation = true;
     }
 
@@ -85,7 +77,6 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("collide");
         if (other.gameObject.tag == "Spikes")
         {
             StopAnimation();
@@ -94,7 +85,6 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.tag == "Door")
         {
-            Debug.Log("door");
             StopAnimation();
             DoorHit?.Invoke(this);
         }
